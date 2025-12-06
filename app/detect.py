@@ -39,17 +39,13 @@ class Gesture_Detector:
                 if not ret:
                     break
 
-                # convert for mediapipe
                 rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
 
-                # perform detection
                 result = recognizer.recognize(mp_image)
 
-                # handle gesture result
                 await self.handle_result(result)
 
-                # show frame
                 cv2.imshow("FRAME", frame)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
@@ -65,11 +61,11 @@ class Gesture_Detector:
 
         landmarks = result.hand_landmarks[0]
 
-        # index finger position
+        # index finger 
         x = landmarks[8].x
         y = landmarks[8].y
 
-        # gesture name
+   
         if result.gestures:
             gesture_name = result.gestures[0][0].category_name
         else:
