@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gesture Monitor</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        #log { padding:10px; border:1px solid #ccc; height:400px; overflow-y:scroll; background:#f7f7f7; }
+        .msg { margin-bottom: 6px; padding:5px; background:#e9f5ff; border-left:4px solid #2196F3; }
+        .system { background:#fff3cd; border-left:4px solid #ffa500; }
+    </style>
+</head>
+<body>
+
+<h2>Gesture WebSocket Monitor</h2>
+<div id="log"></div>
+
+<script>
+let logBox = document.getElementById("log");
+let ws = new WebSocket("ws://localhost:8000/ws");
+
+function log(text, cls="msg") {
+    let div = document.createElement("div");
+    div.className = cls;
+    div.textContent = "[" + new Date().toLocaleTimeString() + "] " + text;
+    logBox.appendChild(div);
+    logBox.scrollTop = logBox.scrollHeight;
+}
+
+ws.onopen = () => log("Connected to WebSocket", "system");
+ws.onmessage = (e) => log(e.data, "msg");
+ws.onclose = () => log("WebSocket closed!", "system");
+</script>
+
+</body>
+</html>
